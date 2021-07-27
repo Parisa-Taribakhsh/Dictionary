@@ -9,4 +9,4 @@ return(
 )
 }
 
-export default (Logins)
+export default Logins

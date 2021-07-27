@@ -9,4 +9,4 @@ function MyDictionary(){
     )
 }
 
-export default (MyDictionary)
+export default MyDictionary

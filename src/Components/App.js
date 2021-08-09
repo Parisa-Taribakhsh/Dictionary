@@ -4,9 +4,8 @@ import MyDictionary from "./MyDictionary";
 import Logins from "./Logins";
 import NotFound from "./NotFound";
 
-
 function App() {
-  return (
+    return (
    <>
        <Switch>
            <Route path ='/my-dictionary' exact component={MyDictionary}/>

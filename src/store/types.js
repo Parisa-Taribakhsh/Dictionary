@@ -1,0 +1,1 @@
+export const SET_WORDS_LIST ="SET_WORDS_LIST"

@@ -58,6 +58,9 @@ function MyDictionary() {
     }
 
     function addNewWord(e) {
+        if(!newWord && !definition ){
+            return
+        }
         e.preventDefault();
         axios.post(`https://dictionary-d48c1-default-rtdb.firebaseio.com/words.json`, {
             word: newWord,
@@ -66,7 +69,8 @@ function MyDictionary() {
             .then(() => {
                 addWord(newWord, definition);
                 setNewWord('');
-                setDefinition('')
+                setDefinition('');
+                getWordsList()
             })
             .catch(() => {
             })
@@ -76,6 +80,10 @@ function MyDictionary() {
 
     let inputWordHandler = e => setNewWord(e.target.value)
     let inputDefinitionHandler = e => setDefinition(e.target.value)
+    let wordsEditHandler =e => setOpenEditBox({isOpen: true, item: {key:openEditBox.item.key,word:e.target.value,definition:openEditBox.item.definition}})
+    let definitionsEditHandler =e=>  setOpenEditBox({isOpen: true, item: {key:openEditBox.item.key,word:openEditBox.item.word,definition:e.target.value}})
+    let editModalHandler =item=> setOpenEditBox({isOpen: true, item})
+    let deleteModalHandler =key=>setDeleteConfirmBox({isOpen: true, key})
 
 
     function deleteWord() {
@@ -92,6 +100,18 @@ function MyDictionary() {
             .finally(() => {
                 setDeleteConfirmBox({isOpen: false, key: {}})
             });
+    }
+
+    let editWord =()=>{
+        console.log(openEditBox)
+        axios.put(`https://dictionary-d48c1-default-rtdb.firebaseio.com/words/${openEditBox.item.key}.json`,{
+            key :openEditBox.item.key,
+            word: openEditBox.item.word,
+            definition: openEditBox.item.definition,
+        })
+            .then(()=>{setOpenEditBox({isOpen: false, item: {}})})
+            .catch(() => {})
+            .finally(()=>{getWordsList()});
     }
 
     return (
@@ -123,7 +143,7 @@ function MyDictionary() {
                         </div>
                         <div className='col-12 col-lg-2 my-auto my-2'>
                             <Button variant="contained" color="secondary"
-                                    onClick={!!newWord && !!definition ? addNewWord : ''}>
+                                    onClick={addNewWord}>
                                 ADD
                             </Button>
                         </div>
@@ -148,10 +168,10 @@ function MyDictionary() {
                                         <TableCell align="left">{row.word}</TableCell>
                                         <TableCell align="left">{row.definition}</TableCell>
                                         <TableCell align="left" onClick={() => {
-                                            setOpenEditBox({isOpen: true, item: row})
+                                            editModalHandler(row)
                                         }}>edit</TableCell>
                                         <TableCell align="left" onClick={() => {
-                                            setDeleteConfirmBox({isOpen: true, key: row.key})
+                                            deleteModalHandler(row.key)
                                         }}>delete</TableCell>
                                     </TableRow>
                                 ))}
@@ -203,6 +223,7 @@ function MyDictionary() {
                                             value={openEditBox.item.word}
                                             variant="outlined"
                                             className='w-100'
+                                            onChange={wordsEditHandler}
                                         />
                                     </div>
                                     <div className='col-12 col-lg-5 my-2'>
@@ -213,6 +234,7 @@ function MyDictionary() {
                                             value={openEditBox.item.definition}
                                             variant="outlined"
                                             className='w-100'
+                                            onChange={definitionsEditHandler}
                                         />
                                     </div>
                                 </div>
@@ -222,7 +244,7 @@ function MyDictionary() {
                             <Button onClick={() => setOpenEditBox({isOpen: false, item: {}})}>
                                 close
                             </Button>
-                            <Button color="secondary">
+                            <Button color="secondary" onClick={()=>editWord(openEditBox)}>
                                 Edit
                             </Button>
                         </DialogActions>

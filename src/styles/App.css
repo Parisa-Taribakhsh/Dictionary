@@ -1,1 +1,23 @@
+h1{
+    color: rgba(39,0,67,0.64);
+    font-style: italic;
+    padding:  50px 0 70px 0px;
+    text-align: center;
+}
+
+.MuiTableCell-head{
+    color: white !important;
+    background-color:rgba(39,0,67,0.64) ;
+}
+
+.css-11pbyhm-MuiSvgIcon-root{
+    color: rgba(26,0,47,0.44)!important;
+    cursor: pointer;
+}
+
+.MuiButton-contained{
+    background-color: rgba(39,0,67,0.64)!important;
+    color: white !important;
+}
+
 

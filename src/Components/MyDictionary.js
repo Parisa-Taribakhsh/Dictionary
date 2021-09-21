@@ -9,6 +9,10 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import '@emotion/react';
+import {DialogTitle} from "@mui/material";
 
 const useStyles = makeStyles({
     table: {
@@ -58,8 +62,8 @@ function MyDictionary() {
     }
 
     function addNewWord(e) {
-        if(!newWord && !definition ){
-            return
+        if(!newWord || !definition ){
+          return
         }
         e.preventDefault();
         axios.post(`https://dictionary-d48c1-default-rtdb.firebaseio.com/words.json`, {
@@ -115,10 +119,11 @@ function MyDictionary() {
     }
 
     return (
-        <div>
+        <div className='container'>
             <div>
-                <div className='container text-center p-5'>
-                    <div className='row'>
+                    <h1>MY DICTIONARY</h1>
+                <div className='container text-center p-1'>
+                    <div className='row py-4'>
                         <div className='col-12 col-lg-5 my-2'>
                             <TextField
                                 id="outlined-textarea"
@@ -142,7 +147,7 @@ function MyDictionary() {
                             />
                         </div>
                         <div className='col-12 col-lg-2 my-auto my-2'>
-                            <Button variant="contained" color="secondary"
+                            <Button variant="contained"
                                     onClick={addNewWord}>
                                 ADD
                             </Button>
@@ -151,8 +156,8 @@ function MyDictionary() {
                 </div>
             </div>
             <div>
-                <div>
-                    <TableContainer component={Paper} className='p-5 table-bordered'>
+                <div className="">
+                    <TableContainer component={Paper} className=' table-bordered'>
                         <Table className={classes.table} aria-label="simple table">
                             <TableHead>
                                 <TableRow>
@@ -169,10 +174,10 @@ function MyDictionary() {
                                         <TableCell align="left">{row.definition}</TableCell>
                                         <TableCell align="left" onClick={() => {
                                             editModalHandler(row)
-                                        }}>edit</TableCell>
+                                        }}><EditIcon color="action"/></TableCell>
                                         <TableCell align="left" onClick={() => {
                                             deleteModalHandler(row.key)
-                                        }}>delete</TableCell>
+                                        }}> <DeleteIcon color="action"/></TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -189,7 +194,7 @@ function MyDictionary() {
                     >
                         <DialogContent>
                             <DialogContentText id="alert-dialog-slide-description">
-                                "Do you want to delete this word?"
+                                Do you want to delete this word?
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
@@ -210,10 +215,11 @@ function MyDictionary() {
                         aria-labelledby="alert-dialog-slide-title"
                         aria-describedby="alert-dialog-slide-description"
                     >
+                        <DialogTitle>
+                            Edit your word or definition!
+                        </DialogTitle>
                         <DialogContent>
-                            <DialogContentText id="alert-dialog-slide-description">
-                            </DialogContentText>
-                            <div className='container text-center p-5'>
+                            <div className=' text-center'>
                                 <div className='row'>
                                     <div className='col-12 col-lg-5 my-2'>
                                         <TextField
@@ -244,7 +250,7 @@ function MyDictionary() {
                             <Button onClick={() => setOpenEditBox({isOpen: false, item: {}})}>
                                 close
                             </Button>
-                            <Button color="secondary" onClick={()=>editWord(openEditBox)}>
+                            <Button color="primary" onClick={()=>editWord(openEditBox)}>
                                 Edit
                             </Button>
                         </DialogActions>

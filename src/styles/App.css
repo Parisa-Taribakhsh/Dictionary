@@ -1,13 +1,18 @@
 h1{
     color: rgba(39,0,67,0.64);
     font-style: italic;
-    padding:  50px 0 70px 0px;
+    padding:  50px 0 70px 0;
     text-align: center;
 }
 
 .MuiTableCell-head{
     color: white !important;
     background-color:rgba(39,0,67,0.64) ;
+    font-size:2rem;
+}
+
+.MuiTableCell-body{
+    font-size: medium!important;
 }
 
 .css-11pbyhm-MuiSvgIcon-root{
@@ -20,4 +25,6 @@ h1{
     color: white !important;
 }
 
-
+.m-align{
+    margin: -3px;
+}
